@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Data with Pie Charts</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="piestyle.css">
+</head>
+<body>
+  <h1>Google Sheets Data</h1>
+  
+  <!-- Container for the First Pie Chart -->
+  <div class="chart-container">
+    <h5>Jantina</h5>
+	<canvas id="pieChart1"></canvas>
+  </div>
+  
+  <!-- Container for the Second Pie Chart -->
+  <div class="chart-container">
+    <h5>MTQ</h5>
+	<canvas id="pieChart2"></canvas>
+  </div>
+
+  <script>
+    // Replace with your web app URL
+    const sheetUrl = "https://script.google.com/macros/s/AKfycbwZN-G5pSmiDU0eQzhV2jv-8obtakQ9P0RpLhJzrvwh7seZu6XChNZsbc5-4ItUthkEmg/exec";
+
+    fetch(sheetUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Extract headers and rows
+        const headers = Object.keys(data[0]);
+
+        // Function to create Pie Chart for a given column index
+        const createPieChart = (canvasId, columnIndex) => {
+          const columnData = data.map(row => row[headers[columnIndex]]);
+          const columnCount = {};
+
+          // Count occurrences of each value in the column
+          columnData.forEach(value => {
+            columnCount[value] = (columnCount[value] || 0) + 1;
+          });
+
+          // Prepare labels and data for the pie chart
+          const pieLabels = Object.keys(columnCount);
+          const pieData = Object.values(columnCount);
+
+          // Calculate total to compute percentages
+          const total = pieData.reduce((sum, count) => sum + count, 0);
+
+          // Create Pie Chart using Chart.js
+          const ctx = document.getElementById(canvasId).getContext('2d');
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: pieLabels,
+              datasets: [{
+                label: `Column ${columnIndex + 1} Data Distribution`,
+                data: pieData,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+                hoverOffset: 4
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function(tooltipItem) {
+                      const count = tooltipItem.raw;
+                      const percentage = ((count / total) * 100).toFixed(2);
+                      return `${tooltipItem.label}: ${count} (${percentage}%)`;
+                    }
+                  }
+                },
+                legend: {
+                  position: 'top',
+                }
+              }
+            }
+          });
+        };
+
+        // Create Pie Chart for Column 6 (Index 5) and Column 7 (Index 6)
+        createPieChart('pieChart1', 5); // Column 6
+        createPieChart('pieChart2', 6); // Column 7
+      })
+      .catch(err => {
+        console.error('Error fetching data:', err);
+        document.body.innerHTML = 'Failed to load data.';
+      });
+  </script>
+</body>
+</html>

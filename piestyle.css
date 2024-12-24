@@ -1,0 +1,27 @@
+/* Basic style for the pie chart container */
+.chart-container {
+  width: 80%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Custom style for the pie chart canvas */
+#pieChart1 #pieChart2 {
+  max-width: 100%;
+  max-height: 100%;
+  border: 2px solid #ddd; /* Add a border around the chart */
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+/* Optional: Style for the chart title */
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}

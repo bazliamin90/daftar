@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Data with Grid.js</title>
+  <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="gridstyle.css">
+  <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+</head>
+<body>
+  <h1>Google Sheets Data</h1>
+  <div id="loading">Loading data...</div>
+  <div id="grid"></div>
+
+  <script>
+	// Replace with your web app URL
+    const sheetUrl = "https://script.google.com/macros/s/AKfycbwZN-G5pSmiDU0eQzhV2jv-8obtakQ9P0RpLhJzrvwh7seZu6XChNZsbc5-4ItUthkEmg/exec";
+
+    fetch(sheetUrl)
+		.then(response => response.json())
+		.then(data => {
+		document.getElementById('loading').style.display = 'none';
+        // Extract headers and rows for Grid.js
+        const headers = Object.keys(data[0]);
+        const rows = data.map(row => Object.values(row));
+
+        // Initialize Grid.js
+        new gridjs.Grid({
+		columns: headers,
+		data: rows,
+		search: true,
+		sort: true,
+		pagination: {
+		enabled: true,
+		limit: 10,
+	},
+	
+	}).render(document.getElementById('grid'));
+    })
+      .catch(err => console.error('Error fetching data:', err));
+  </script>
+</body>
+</html>

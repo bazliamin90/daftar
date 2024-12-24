@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Sheets Data with Pie Charts</title>
+  <title>Daftar</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="piestyle.css">
+  <script src="nav.js"></script>
 </head>
 <body>
-  <h1>Google Sheets Data</h1>
-  
+  <h1>Daftar</h1>
+  <header-component></header-component>
+  <div id="loading">Loading data...</div>
   <!-- Container for the First Pie Chart -->
   <div class="chart-container">
     <h5>Jantina</h5>
@@ -29,6 +31,7 @@
     fetch(sheetUrl)
       .then(response => response.json())
       .then(data => {
+	  document.getElementById('loading').style.display = 'none';
         // Extract headers and rows
         const headers = Object.keys(data[0]);
 

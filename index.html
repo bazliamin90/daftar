@@ -13,6 +13,21 @@
 <body>
   <h1>Daftar</h1>
   <header-component></header-component>
+
+  <!-- Dropdown filters -->
+  <label for="mtq-filter">Filter by MTQ:</label>
+  <select id="mtq-filter">
+    <option value="all">All</option>
+  </select>
+
+  <label for="jantina-filter">Filter by Jantina:</label>
+  <select id="jantina-filter">
+    <option value="all">All</option>
+  </select>
+
+  <!-- Reset Button -->
+  <button id="reset-button">Reset Filters</button>
+
   <div id="loading">Loading data...</div>
   <div id="grid"></div>
   <div class="info-container">
@@ -31,26 +46,51 @@
   </div>
 
   <script>
-    // Replace with your web app URL
     const sheetUrl = "https://script.google.com/macros/s/AKfycbwZN-G5pSmiDU0eQzhV2jv-8obtakQ9P0RpLhJzrvwh7seZu6XChNZsbc5-4ItUthkEmg/exec";
+
+    let gridInstance;
+    let rawData = [];
 
     fetch(sheetUrl)
       .then(response => response.json())
       .then(data => {
         document.getElementById('loading').style.display = 'none';
 
-        // Check if data exists
         if (!data.length) {
           document.getElementById('loading').textContent = 'No data available.';
           return;
         }
 
-        // Extract headers and rows for Grid.js
+        rawData = data;
+
+        // Extract headers and rows
         const headers = Object.keys(data[0]);
         const rows = data.map(row => Object.values(row));
 
+        // Populate MTQ filter with unique values
+        const columnIndexMTQ = 6; // 0-based index for column 7 (MTQ)
+        const uniqueMTQValues = Array.from(new Set(rows.map(row => row[columnIndexMTQ])));
+        const mtqFilter = document.getElementById('mtq-filter');
+        uniqueMTQValues.forEach(value => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = value;
+          mtqFilter.appendChild(option);
+        });
+
+        // Populate Jantina filter with unique values
+        const columnIndexJantina = 5; // 0-based index for column 6 (JANTINA)
+        const uniqueJantinaValues = Array.from(new Set(rows.map(row => row[columnIndexJantina])));
+        const jantinaFilter = document.getElementById('jantina-filter');
+        uniqueJantinaValues.forEach(value => {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = value;
+          jantinaFilter.appendChild(option);
+        });
+
         // Initialize Grid.js
-        new gridjs.Grid({
+        gridInstance = new gridjs.Grid({
           columns: headers,
           data: rows,
           search: true,
@@ -61,31 +101,69 @@
           },
         }).render(document.getElementById('grid'));
 
-        // Update row count display
-        const rowCountBox = document.getElementById('row-count-box');
-        const rowCount = document.getElementById('row-count');
-        rowCount.textContent = rows.length;
-        rowCountBox.style.display = 'block';
+        // Function to update statistics display
+        const updateStatistics = (filteredRows) => {
+          // Update row count
+          document.getElementById('row-count').textContent = filteredRows.length;
 
-        // Count occurrences of "L" in column 6
-        const columnIndexL = 5; // 0-based index for column 6
-        const lCount = rows.filter(row => row[columnIndexL] === "L").length;
-        const lCountBox = document.getElementById('column-l-box');
-        document.getElementById('column-l-count').textContent = lCount;
-        lCountBox.style.display = 'block';
+          // Count occurrences of "L" and "P" in column 6
+          const lCount = filteredRows.filter(row => row[columnIndexJantina] === "L").length;
+          document.getElementById('column-l-count').textContent = lCount;
 
-        // Count occurrences of "P" in column 6
-        const pCount = rows.filter(row => row[columnIndexL] === "P").length;
-        const pCountBox = document.getElementById('column-p-box');
-        document.getElementById('column-p-count').textContent = pCount;
-        pCountBox.style.display = 'block';
+          const pCount = filteredRows.filter(row => row[columnIndexJantina] === "P").length;
+          document.getElementById('column-p-count').textContent = pCount;
 
-        // Calculate total for column 8 (Komisen MTQ)
-        const columnIndexKomisen = 7; // 0-based index for column 8
-        const komisenTotal = rows.reduce((sum, row) => sum + (parseFloat(row[columnIndexKomisen]) || 0), 0);
-        const komisenBox = document.getElementById('komisen-box');
-        document.getElementById('komisen-total').textContent = komisenTotal.toFixed(2); // Format to 2 decimal places
-        komisenBox.style.display = 'block';
+          // Calculate total for column 8 (Komisen MTQ)
+          const columnIndexKomisen = 7; // 0-based index for column 8
+          const komisenTotal = filteredRows.reduce((sum, row) => sum + (parseFloat(row[columnIndexKomisen]) || 0), 0);
+          document.getElementById('komisen-total').textContent = komisenTotal.toFixed(2);
+        };
+
+        // Initial statistics update with all rows
+        updateStatistics(rows);
+        document.getElementById('row-count-box').style.display = 'block';
+        document.getElementById('column-l-box').style.display = 'block';
+        document.getElementById('column-p-box').style.display = 'block';
+        document.getElementById('komisen-box').style.display = 'block';
+
+        // Function to filter rows based on dropdown selections
+        const applyFilters = () => {
+          const selectedMTQ = mtqFilter.value;
+          const selectedJantina = jantinaFilter.value;
+
+          const filteredRows = rows.filter(row => {
+            const matchesMTQ = selectedMTQ === 'all' || row[columnIndexMTQ] === selectedMTQ;
+            const matchesJantina = selectedJantina === 'all' || row[columnIndexJantina] === selectedJantina;
+            return matchesMTQ && matchesJantina;
+          });
+
+          // Update Grid.js with filtered data
+          gridInstance.updateConfig({
+            data: filteredRows,
+          }).forceRender();
+
+          // Update statistics display for filtered data
+          updateStatistics(filteredRows);
+        };
+
+        // Reset filters and statistics
+        const resetFilters = () => {
+          mtqFilter.value = 'all';
+          jantinaFilter.value = 'all';
+
+          // Reset Grid.js and statistics to full dataset
+          gridInstance.updateConfig({
+            data: rows,
+          }).forceRender();
+          updateStatistics(rows);
+        };
+
+        // Add event listeners for filters
+        mtqFilter.addEventListener('change', applyFilters);
+        jantinaFilter.addEventListener('change', applyFilters);
+
+        // Add event listener for reset button
+        document.getElementById('reset-button').addEventListener('click', resetFilters);
       })
       .catch(err => {
         console.error('Error fetching data:', err);

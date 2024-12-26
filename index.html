@@ -5,28 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar</title>
   <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="bodystyle.css">
+  <link rel="stylesheet" href="filterstyle.css">
   <link rel="stylesheet" href="gridstyle.css">
   <link rel="stylesheet" href="displaybox.css">
   <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
   <script src="nav.js"></script>
 </head>
 <body>
-  <h1>Daftar</h1>
+  <h1><a href="index.html" class="header">Daftar</a></h1>
+  <center><h5>-Table-</h5></center>
+  <hr>
   <header-component></header-component>
 
-  <!-- Dropdown filters -->
-  <label for="mtq-filter">Filter by MTQ:</label>
-  <select id="mtq-filter">
-    <option value="all">All</option>
-  </select>
-
-  <label for="jantina-filter">Filter by Jantina:</label>
-  <select id="jantina-filter">
-    <option value="all">All</option>
-  </select>
-
-  <!-- Reset Button -->
-  <button id="reset-button">Reset Filters</button>
+<div class="filtercontainer">
+<div>
+  <label for="mtq-filter">MTQ:</label>
+  <select id="mtq-filter"><option value="all">All</option></select>
+</div>
+<div>
+  <label for="jantina-filter">Jantina:</label>
+  <select id="jantina-filter"><option value="all">All</option></select>
+</div>
+<div>
+  <button id="reset-button">Reset</button>
+</div>
+</div>
 
   <div id="loading">Loading data...</div>
   <div id="grid"></div>
@@ -44,6 +48,8 @@
       Komisen MTQ: RM<span id="komisen-total">0</span>
     </div>
   </div>
+
+<br><br><br>
 
   <script>
     const sheetUrl = "https://script.google.com/macros/s/AKfycbwZN-G5pSmiDU0eQzhV2jv-8obtakQ9P0RpLhJzrvwh7seZu6XChNZsbc5-4ItUthkEmg/exec";

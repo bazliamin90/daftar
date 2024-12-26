@@ -12,7 +12,7 @@ headerTemplate.innerHTML = `
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: opacity 0.3s ease; /* Smooth transition for visibility */
         position: absolute; /* Overlay positioning */
-        top: 35%; /* Center vertically */
+        top: 45%; /* Center vertically */
         left: 50%; /* Center horizontally */
         transform: translate(-50%, -50%); /* Adjust positioning to center */
         display: none; /* Initially hidden */

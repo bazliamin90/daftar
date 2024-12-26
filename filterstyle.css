@@ -1,0 +1,16 @@
+.filtercontainer {
+	display: flex;
+	margin: 0 auto;
+	flex-wrap: wrap;
+	max-width: 400px;
+}
+
+.filtercontainer > div {
+	margin: 10px auto;
+	font-family: monospace;
+	padding: 7px 3px;
+}
+
+.filtercontainer > div select, .filtercontainer > div button {
+	font-family: monospace;
+}

@@ -17,4 +17,5 @@
 
 .filtercontainer > div select:focus {
   outline: none;
+  border: 1px solid red;
 }

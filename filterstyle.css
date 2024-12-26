@@ -13,4 +13,5 @@
 
 .filtercontainer > div select, .filtercontainer > div button {
 	font-family: monospace;
+	outline: none;
 }

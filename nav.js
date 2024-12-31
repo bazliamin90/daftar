@@ -102,7 +102,7 @@ headerTemplate.innerHTML = `
 	}
   </style>
 
-  <button class="list-button" aria-label="Toggle List">Visuals</button>
+  <button class="list-button" aria-label="Toggle List">Page</button>
   <div id="overlay"></div>
   <div class="scroll-box" id="scroll-box">
       <div class="close-message">Click outside this box to close it</div>
@@ -116,6 +116,7 @@ headerTemplate.innerHTML = `
       <ol id="list">
           <li><a href="index.html">Table</a></li>
           <li><a href="index2.html">Pie charts</a></li>
+		  <li><a href="index3.html">MTQ 4</a></li>
       </ol>
   </div>
 `;

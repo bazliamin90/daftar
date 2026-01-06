@@ -3,7 +3,8 @@ const headerTemplate = document.createElement('template');
 headerTemplate.innerHTML = `
   <style>
 	.scroll-box {
-        width: 30%; /* Adjust the width as needed */
+        width: 50%; /* Adjust the width as needed */
+        max-width: 500px;
         height: 150px; /* Fixed height to limit the visible area */
         border: 3px solid black;
         padding: 10px;
@@ -25,7 +26,7 @@ headerTemplate.innerHTML = `
 	
 	.scroll-box .close-message {
         font-family: monospace;
-		font-size: 8px;
+		    font-size: 8px;
         color: grey;
         margin-bottom: 10px;
         text-align: center;
@@ -37,14 +38,14 @@ headerTemplate.innerHTML = `
         padding: 5px;
         margin-bottom: 10px;
         font-family: monospace;
-		font-size: 12px;
+		    font-size: 12px;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
 
     .scroll-box ol {
         font-family: monospace;
-		margin: 0; /* Remove extra margins */
+		    margin: 0; /* Remove extra margins */
         padding: 0; /* Remove extra padding */
         list-style-position: inside; /* Ensure list numbers are visible within the box */
 		color: red;
@@ -114,7 +115,7 @@ headerTemplate.innerHTML = `
         aria-label="Search list items"
       />
       <ol id="list">
-        <li>2026: <a href="index.html">Table</a> | <a href="index2.html">Pie charts</a> | <a href="index3.html">MTQ 4</a></li>
+        <li>2026: <a href="2026a.html">Table</a> | <a href="2026b.html">Pie charts</a> | <a href="2026c.html">Men. Atas</a></li>
         <li>2025: <a href="index.html">Table</a> | <a href="index2.html">Pie charts</a> | <a href="index3.html">MTQ 4</a></li>
       </ol>
   </div>

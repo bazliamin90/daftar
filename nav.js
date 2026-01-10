@@ -115,7 +115,7 @@ headerTemplate.innerHTML = `
         aria-label="Search list items"
       />
       <ol id="list">
-        <li>2026: <br><a href="2026a.html">Table</a> | <a href="2026b.html">Pie charts</a> | <a href="2026c.html">Men. Atas</a></li>
+        <li>2026: <br><a href="2026a.html">Men. rendah</a> | <a href="2026b.html">Pie charts</a> | <a href="2026c.html">Men. Atas</a></li>
         <li>2025: <br><a href="index.html">Table</a> | <a href="index2.html">Pie charts</a> | <a href="index3.html">MTQ 4</a></li>
       </ol>
   </div>

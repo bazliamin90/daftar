@@ -14,7 +14,7 @@
 </head>
 <body>
   <h3><a href="2026a.html" class="header">Daftar 2026</a></h3>
-  <center><h5>-Table-</h5></center>
+  <center><h5>-Menengah rendah-</h5></center>
   <hr>
   <header-component></header-component>
 
@@ -71,7 +71,17 @@
 
         // Extract headers and rows
         const headers = Object.keys(data[0]);
-        const rows = data.map(row => Object.values(row));
+        const rows = data.map(row => {
+  const values = Object.values(row);
+
+  // Format date at index 1
+  if (values[1]) {
+    values[1] = values[1].split('T')[0];
+  }
+
+  return values;
+});
+
 
         // Populate MTQ filter with unique values
         const columnIndexMTQ = 6; // 0-based index for column 7 (MTQ)
